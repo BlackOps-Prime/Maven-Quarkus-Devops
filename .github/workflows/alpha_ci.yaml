@@ -14,4 +14,14 @@ jobs:
       with:
         ref: main
 
+    -
+      name: Set up JDK Environment With Java 17
+      uses: actions/setup-java@v2
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+
+    -
+      name: Build Application With Maven
+      run: ./mvnw package
 
