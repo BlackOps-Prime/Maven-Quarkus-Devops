@@ -10,10 +10,10 @@ ENV LANGUAGE='en_US:en'
 # COPY --chown=185 target/quarkus-app/quarkus/* /deployments/quarkus/
 
 
-COPY target/quarkus-app/lib* /deployments/lib/
-COPY target/quarkus-app/*.jar /deployments/
-COPY target/quarkus-app/app/* /deployments/app/
-COPY target/quarkus-app/quarkus/* /deployments/quarkus/
+COPY ./target/quarkus-app/lib* /deployments/lib/
+COPY ./target/quarkus-app/*.jar /deployments/
+COPY ./target/quarkus-app/app/* /deployments/app/
+COPY ./target/quarkus-app/quarkus/* /deployments/quarkus/
 
 EXPOSE 8080
 USER 185
