@@ -25,3 +25,10 @@ jobs:
       name: Build Application With Maven
       run: ./mvnw package
 
+    -
+      name: Debuging the target folder
+      run: ls -lha target/quarkus-app/*
+
+
+      
+
