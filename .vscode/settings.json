@@ -1,0 +1,6 @@
+{
+    "ansible.python.interpreterPath": "/usr/bin/python3",
+    "yaml.schemas": {
+        "https://json.schemastore.org/github-workflow.json": "file:///Users/christopher.afeku/e-tranzact/e-tranzact-devops/.github/workflows/alpha_ci.yaml"
+    }
+}
