@@ -27,7 +27,7 @@ jobs:
 
     -
       name: Debuging the target folder
-      run: pwd && ls -lha target/quarkus-app/* 
+      run: pwd && ls -lha /tmp/buildkit-mount981390884/ && ls -lha target/quarkus-app/* 
 
     -
         name: Set up QEMU for multiple platform builds
