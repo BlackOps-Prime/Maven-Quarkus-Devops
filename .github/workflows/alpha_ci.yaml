@@ -27,7 +27,7 @@ jobs:
 
     -
       name: Debuging the target folder
-      run: ls -lha target/quarkus-app/* 
+      run: pwd && ls -lha target/quarkus-app/* 
 
     -
         name: Set up QEMU for multiple platform builds
