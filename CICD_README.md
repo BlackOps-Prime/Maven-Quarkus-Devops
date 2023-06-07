@@ -1,7 +1,7 @@
 ### Deployment Instructions
 
 This project leverages on GitHub Actions For the CI and Amazon ECS For The CD.
-
+You will need to setup the appropriate credentials for this workflow to work.
 
 On Push, the main repo is checked out and the build process begins.
 
