@@ -51,7 +51,7 @@ jobs:
         uses: docker/build-push-action@v1
         with:
           push: true
-          tags: devops-test-jvm:${{github.run_number}}
+          tags: devops-test-jvm-SNAPSHOT-${{github.run_number}}
 
 
 
