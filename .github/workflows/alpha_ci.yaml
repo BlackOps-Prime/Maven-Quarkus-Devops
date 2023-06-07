@@ -48,19 +48,10 @@ jobs:
 
     -
         name: Build and push to dockerhub
-        uses: cloudposse/github-action-docker-build-push@main
+        uses: docker/build-push-action@v1
         with:
-          registry: registry.hub.docker.com
-          organization: "${{ github.event.repository.owner.login }}"
-          repository: "${{ github.event.repository.name }}"
-          login: "${{ secrets.DOCKERHUB_USERNAME }}"
-          password: "${{ secrets.DOCKERHUB_PASSWORD }}"
-          platforms: linux/amd64,linux/arm64
-
-        # uses: docker/build-push-action@v1
-        # with:
-        #   push: true
-        #   tags: kr00deapp/devops-test-jvm:${{github.run_number}}
+          push: true
+          tags: devops-test-jvm:${{github.run_number}}
 
 
 
