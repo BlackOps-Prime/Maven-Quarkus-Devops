@@ -27,7 +27,7 @@ jobs:
 
     -
       name: Debuging the target folder
-      run: pwd && ls -lha /tmp/buildkit-mount981390884/ && ls -lha target/quarkus-app/* 
+      run: pwd && ls -lha target/quarkus-app/* 
 
     -
         name: Set up QEMU for multiple platform builds
@@ -35,7 +35,9 @@ jobs:
 
     -
         name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v1
+        with:
+          version: v0.7.0
 
     -
         name: Login to Docker Hub
