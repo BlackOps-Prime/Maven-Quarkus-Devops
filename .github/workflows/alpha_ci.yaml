@@ -27,7 +27,7 @@ jobs:
 
     -
       name: Debuging the target folder
-      run: pwd && ls -lha target/quarkus-app/* 
+      run: pwd && ls -lha target/quarkus-app/*
 
     -
         name: Set up QEMU for multiple platform builds
@@ -51,14 +51,14 @@ jobs:
         uses: docker/build-push-action@v1
         with:
           push: true
-          tags: devops-test-jvm-SNAPSHOT-${{github.run_number}}
+          tags: kr00deapp/e-transact-devops:devops-test-jvm-SNAPSHOT-${{github.run_number}}
 
 
-    -
-      name: Slack Notification
-      uses: rtCamp/action-slack-notify@v2
-      env:
-        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+    # -
+    #   name: Slack Notification
+    #   uses: rtCamp/action-slack-notify@v2
+    #   env:
+    #     SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
 
 
 
