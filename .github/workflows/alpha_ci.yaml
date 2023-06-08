@@ -49,7 +49,7 @@ jobs:
         uses: docker/build-push-action@v1
         with:
           push: true
-          repository: ${{ secrets.DOCKERHUB_USERNAME }}/e-transact-devops
+          repository: kr00deapp/e-transact-devops
           tags: devops-test-jvm-SNAPSHOT-${{github.run_number}}
 
 
