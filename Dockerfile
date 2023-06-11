@@ -18,4 +18,4 @@ ENV JAVA_APP_JAR="/deployments/quarkus-run.jar"
 # Used to troubleshoot the container
 # CMD ["tail", "-f", "/dev/null"]
 
-ENTRYPOINT java -jar /deployments/quarkus-run.jar
+ENTRYPOINT java -jar $JAVA_APP_JAR
