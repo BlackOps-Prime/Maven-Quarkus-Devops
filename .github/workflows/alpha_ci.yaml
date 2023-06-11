@@ -37,49 +37,28 @@ jobs:
         pwd && ls -lha .
 
     -
-        # Caching Docker Layers For Faster Consequent Builds
-        name: Cache Docker layers
-        uses: actions/cache@v3
-        with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-buildx-
-
-    -
         name: Login to Docker Hub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-    # -
-    #     name: Build and push to dockerhub
-    #     uses: docker/build-push-action@v1
-    #     with:
-    #       push: true
-    #       cache-from: type=local,src=/tmp/.buildx-cache
-    #       cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
-    #       repository: kr00deapp/e-transact-devops
-    #       tags: kr00deapp/e-transact-devops:001-SNAPSHOT-${{github.run_number}}
-
-    # -
-    #     # Temp fix For Caching Build Data
-    #     # https://github.com/docker/build-push-action/issues/252
-    #     # https://github.com/moby/buildkit/issues/1896
-    #     name: Move cache
-    #     run: |
-    #       rm -rf /tmp/.buildx-cache
-    #       mv /tmp/.buildx-cache-new /tmp/.buildx-cache
-
-
     -
-      name: Build Docker Image
-      run: docker buildx build --platform linux/arm64 -t kr00deapp/e-transact-devops:1.0.0-SNAPSHOT-${{github.run_number}} .
+        name: Build and push to dockerhub
+        uses: docker/build-push-action@v4
+        with:
+          push: true
+          context: src/main/docker
+          # repository: kr00deapp/e-transact-devops
+          tags: kr00deapp/e-transact-devops:001-SNAPSHOT-${{github.run_number}}
 
-    -
-      name: Push Build To DockerHub
-      run: docker push kr00deapp/e-transact-devops:1.0.0-SNAPSHOT-${{github.run_number}}
+    # -
+    #   name: Build Docker Image
+    #   run: docker buildx build --platform linux/arm64 -t kr00deapp/e-transact-devops:1.0.0-SNAPSHOT-${{github.run_number}} .
+
+    # -
+    #   name: Push Build To DockerHub
+    #   run: docker push kr00deapp/e-transact-devops:1.0.0-SNAPSHOT-${{github.run_number}}
 
 
     # -
