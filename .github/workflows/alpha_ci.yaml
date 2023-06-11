@@ -25,7 +25,7 @@ jobs:
 
     -
     # Packaging The Application
-      name: Test & Build Application With Maven
+      name: Test & Package Application With Maven
       run: ./mvnw package
 
 
