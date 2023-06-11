@@ -15,5 +15,5 @@ ENV JAVA_OPTS="-Dquarkus.http.host=0.0.0.0 -Djava.util.logging.manager=org.jboss
 ENV JAVA_APP_JAR="/deployments/quarkus-run.jar"
 
 
-CMD ["tail", "-f", "/dev/null"]
-# ENTRYPOINT ["java", "-jar", "$JAVA_APP_JAR"]
+# CMD ["tail", "-f", "/dev/null"]
+CMD ["java", "-jar", "$JAVA_APP_JAR"]
