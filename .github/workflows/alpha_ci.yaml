@@ -44,21 +44,12 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
     -
-        name: Build and push to dockerhub
-        uses: docker/build-push-action@v4
-        with:
-          push: true
-          context: src/main/docker
-          # repository: kr00deapp/e-transact-devops
-          tags: kr00deapp/e-transact-devops:001-SNAPSHOT-${{github.run_number}}
+      name: Build Docker Image
+      run: docker buildx build --platform linux/arm64 -t kr00deapp/e-transact-devops:1.0.0-SNAPSHOT-${{github.run_number}} .
 
-    # -
-    #   name: Build Docker Image
-    #   run: docker buildx build --platform linux/arm64 -t kr00deapp/e-transact-devops:1.0.0-SNAPSHOT-${{github.run_number}} .
-
-    # -
-    #   name: Push Build To DockerHub
-    #   run: docker push kr00deapp/e-transact-devops:1.0.0-SNAPSHOT-${{github.run_number}}
+    -
+      name: Push Build To DockerHub
+      run: docker push kr00deapp/e-transact-devops:1.0.0-SNAPSHOT-${{github.run_number}}
 
 
     # -
