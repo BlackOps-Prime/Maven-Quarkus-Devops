@@ -17,4 +17,4 @@ ENV JAVA_APP_JAR="/deployments/quarkus-run.jar"
 
 
 # CMD ["tail", "-f", "/dev/null"]
-ENTRYPOINT ["java" "-jar", "$JAVA_APP_JAR"]
+ENTRYPOINT ["java", "-jar", "$JAVA_APP_JAR"]
