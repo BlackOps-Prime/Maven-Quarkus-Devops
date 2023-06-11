@@ -9,12 +9,14 @@ jobs:
     steps:
 
     -
+    # Checking out from Git Repository
       name: Checkout From Repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         ref: main
 
     -
+    # Setting Up The JDK Environment Using Java 17
       name: Set up JDK Environment With Java 17
       uses: actions/setup-java@v2
       with:
@@ -22,20 +24,15 @@ jobs:
         distribution: 'temurin'
 
     -
+    # Packaging The Application
       name: Test & Build Application With Maven
       run: ./mvnw package
 
+
     -
+    # Troubleshooting The Contents Of The Debug Directory
       name: Debuging the target folder
       run: pwd && ls -lha target/quarkus-app/*
-
-    -
-        name: Set up QEMU for multiple platform builds
-        uses: docker/setup-qemu-action@v2
-
-    -
-        name: Set up Docker Buildx to build application
-        uses: docker/setup-buildx-action@v2
 
     -
         # Caching Docker Layers For Faster Consequent Builds
@@ -80,7 +77,7 @@ jobs:
 
     -
       name: Build Docker Image
-      run: docker build -t kr00deapp/e-transact-devops:1.0.0-SNAPSHOT-${{github.run_number}} .
+      run: docker build -t kr00deapp/e-transact-devops:1.0.0-SNAPSHOT-${{github.run_number}} --platform linux/arm64 .
 
     -
       name: Push Build To DockerHub
