@@ -77,7 +77,7 @@ jobs:
 
     -
       name: Build Docker Image
-      run: docker build --platform linux/amd64 -t kr00deapp/e-transact-devops:1.0.0-SNAPSHOT-${{github.run_number}} .
+      run: docker buildx build --platform linux/amd64 -t kr00deapp/e-transact-devops:1.0.0-SNAPSHOT-${{github.run_number}} .
 
     -
       name: Push Build To DockerHub
