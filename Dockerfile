@@ -10,6 +10,8 @@ COPY --chown=185 target/quarkus-app/app/* /deployments/app/
 COPY --chown=185 target/quarkus-app/quarkus/* /deployments/quarkus/
 COPY entrypoint.sh .
 
+RUN chmod +x entrypoint.sh
+
 EXPOSE 8080
 USER 185
 ENV JAVA_OPTS="-Dquarkus.http.host=0.0.0.0 -Djava.util.logging.manager=org.jboss.logmanager.LogManager"
