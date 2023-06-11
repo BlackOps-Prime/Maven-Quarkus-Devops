@@ -8,9 +8,9 @@ COPY --chown=185 target/quarkus-app/lib* /deployments/lib/
 COPY --chown=185 target/quarkus-app/*.jar /deployments/
 COPY --chown=185 target/quarkus-app/app/* /deployments/app/
 COPY --chown=185 target/quarkus-app/quarkus/* /deployments/quarkus/
-COPY --chown=185 entrypoint.sh ./entrypoint.sh
+COPY --chown=185 entrypoint.sh /usr/local/bin/entrypoint.sh
 
-RUN chmod +x /deployments/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
 
 EXPOSE 8080
 USER 185
