@@ -8,12 +8,7 @@ COPY --chown=185 target/quarkus-app/lib* /deployments/lib/
 COPY --chown=185 target/quarkus-app/*.jar /deployments/
 COPY --chown=185 target/quarkus-app/app/* /deployments/app/
 COPY --chown=185 target/quarkus-app/quarkus/* /deployments/quarkus/
-
-
-# COPY ./target/quarkus-app/lib* /deployments/lib/
-# COPY ./target/quarkus-app/*.jar /deployments/
-# COPY ./target/quarkus-app/app/* /deployments/app/
-# COPY ./target/quarkus-app/quarkus/* /deployments/quarkus/
+COPY entrypoint.sh .
 
 EXPOSE 8080
 USER 185
