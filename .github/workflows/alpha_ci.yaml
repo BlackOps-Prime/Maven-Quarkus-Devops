@@ -80,7 +80,7 @@ jobs:
 
     -
       name: Build Docker Image
-      run: docker build -t kr00deapp/e-transact-devops:devops-test-jvm-SNAPSHOT-${{github.run_number}} .
+      run: docker build -t kr00deapp/e-transact-devops:1.0.0-SNAPSHOT-${{github.run_number}} .
 
     -
       name: Push Build To DockerHub
