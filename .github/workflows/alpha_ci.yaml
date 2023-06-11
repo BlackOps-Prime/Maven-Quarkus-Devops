@@ -55,11 +55,11 @@ jobs:
       run: docker push kr00deapp/e-transact-devops:1.0.0-SNAPSHOT-${{github.run_number}}
 
 
-    # -
-    #   name: Slack Notification
-    #   uses: rtCamp/action-slack-notify@v2
-    #   env:
-    #     SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+    -
+      name: Slack Notification
+      uses: rtCamp/action-slack-notify@v2
+      env:
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
 
 
 
