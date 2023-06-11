@@ -53,8 +53,8 @@ jobs:
         uses: docker/build-push-action@v1
         with:
           push: true
-          # repository: kr00deapp/e-transact-devops
-          tags: kr00deapp/e-transact-devops:001-SNAPSHOT-${{github.run_number}}
+          repository: kr00deapp/e-transact-devops
+          tags: 001-SNAPSHOT-${{github.run_number}}
 
     # -
     #   name: Build Docker Image
