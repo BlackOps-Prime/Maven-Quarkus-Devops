@@ -32,7 +32,9 @@ jobs:
     -
     # Troubleshooting The Contents Of The Debug Directory
       name: Debuging the target folder
-      run: pwd && ls -lha target/quarkus-app/*
+      run: |
+        pwd && ls -lha target/quarkus-app/*
+        pwd && ls -lha .
 
     -
         # Caching Docker Layers For Faster Consequent Builds
