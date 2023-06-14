@@ -94,7 +94,6 @@ ENV JAVA_OPTS="-Dquarkus.http.host=0.0.0.0 -Djava.util.logging.manager=org.jboss
 ENV JAVA_APP_JAR="/deployments/quarkus-run.jar"
 
 
-# Used to troubleshoot the container
+# Used to troubleshoot a container that dies too fast before troubleshooting begins
+# Please Understand how this command works before you use it.
 # CMD ["tail", "-f", "/dev/null"]
-
-# ENTRYPOINT java -jar /deployments/quarkus-run.jar
