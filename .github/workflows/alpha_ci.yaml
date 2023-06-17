@@ -54,10 +54,7 @@ jobs:
     -
     # Building Docker Image Optimized For ARM Platforms [Apple M1 Devices and any other device that uses an ARM CPU Architecture]
       name: Build Docker Image
-      run: |
-        pushd src/main/docker
-        docker buildx build --platform linux/arm64 -t kr00deapp/e-transact-devops:1.0.0-SNAPSHOT-${{github.run_number}} .
-        popd
+      run: docker buildx build --platform linux/arm64 -t kr00deapp/e-transact-devops:1.0.0-SNAPSHOT-${{github.run_number}} -f docker/Dockerfile
 
     -
     # Pushing Build Docker Image To DockerHub For Storage
