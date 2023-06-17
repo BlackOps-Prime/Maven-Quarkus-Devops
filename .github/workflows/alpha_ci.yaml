@@ -20,7 +20,7 @@ jobs:
       name: Checkout From Repository
       uses: actions/checkout@v3
       with:
-        ref: main
+        ref: feature/cleanup
 
     -
     # Setting Up The JDK Environment Using Java 17
