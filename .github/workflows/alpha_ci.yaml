@@ -50,7 +50,7 @@ jobs:
       name: Build Docker Image
       run: |
         pushd src/main/docker
-        docker buildx build --platform linux/arm64 -t kr00deapp/e-transact-devops:1.0.0-SNAPSHOT-${{github.run_number}} -f Dockerfile.jvm
+        docker buildx build --platform=linux/amd64,linux/arm64 -t kr00deapp/e-transact-devops:1.0.0-SNAPSHOT-${{github.run_number}} .
         popd
 
     -
@@ -64,4 +64,3 @@ jobs:
       uses: rtCamp/action-slack-notify@v2
       env:
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-
