@@ -7,7 +7,8 @@ name: Build & Deploy Java Application
 on:
   push:
     branches:
-      - main
+      # - main
+      - feature/cleanup
 
 jobs:
   Build_And_Deploy:
