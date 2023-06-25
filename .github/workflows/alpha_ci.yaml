@@ -14,8 +14,9 @@ env:
   AWS_REGION: ${{ vars.MAVEN_QUARKUS_AWS_REGION }}
   ECS_SERVICE: ${{ vars.MAVEN_QUARKUS_ECS_SERVICE }}
   ECS_CLUSTER: ${{ vars.MAVEN_QUARKUS_ECS_CLUSTER }}
-  ECS_TASK_DEFINITION: .aws/ECS_Task_Definition.json
+  ECS_TASK_DEFINITION: .aws/templates/ECS_Task_Definition.json
   CONTAINER_NAME: ${{ vars.MAVEN_QUARKUS_CONTAINER_NAME }}
+  DESIRED_COUNT: 1
 
 
 jobs:
@@ -122,17 +123,10 @@ jobs:
         cluster: ${{ env.ECS_CLUSTER }}
         wait-for-service-stability: true
 
+
     -
-      name: Update ECS Service With New Task definition
-      uses: scribd/amazon-ecs-service-action@v1
-      with:
-        # spec-file: .aws/service-spec.json
-        spec: |
-          {
-            "desiredCount": "1"
-            "cluster": "${{ env.ECS_CLUSTER }}"
-            "serviceName": "${{ env.ECS_SERVICE }}"
-            "taskDefinition": "${{ steps.task-def.outputs.task-definition-arn }}"
-          }
-        force-new-deployment: false # True if you're redeploying the same container
-        wait-until-deployment-complete: true
+        name: Update ECS Service With New Task definition
+        run: aws ecs update-service --cluster ${{ env.ECS_CLUSTER }} --service ${{ env.ECS_SERVICE }} --desired-count ${{ env.DESIRED_COUNT }} --task-definition ${{ steps.task-def.outputs.task-definition-arn }} --region ${{ env.AWS_REGION }}
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
