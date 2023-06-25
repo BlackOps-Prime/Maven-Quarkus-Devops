@@ -93,32 +93,45 @@ jobs:
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
 
 
-    -
     # Deploying to Elastic Contianer Service
+
+    -
       name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ env.AWS_REGION }}
-        # role-to-assume: arn:aws:iam::123456789100:role/my-github-actions-role
-
     -
-    # Updating Task Definition With New Image
+    # Updating Task-Definition.json With New Image
       name: Filling in the new image ID in the Amazon ECS task definition
       id: task-def
-      uses: aws-actions/amazon-ecs-render-task-definition@c804dfbdd57f713b6c079302a4c01db7017a36fc
+      uses: aws-actions/amazon-ecs-render-task-definition@v1
       with:
         task-definition: ${{ env.ECS_TASK_DEFINITION }}
         container-name: ${{ env.CONTAINER_NAME }}
         image: kr00deapp/e-transact-devops:${{ steps.get_version.outputs.VERSION }}-${{github.run_number}}
 
     -
-    # Deploying To ECR
-      name: Deploy Amazon ECS task definition
+    # Creating New ECS Task Definition
+      name: Create New ECS Task Definition From Updated Template
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
       with:
         task-definition: ${{ steps.task-def.outputs.task-definition }}
         service: ${{ env.ECS_SERVICE }}
         cluster: ${{ env.ECS_CLUSTER }}
         wait-for-service-stability: true
+
+    -
+      name: Update ECS Service With New Task definition
+      uses: scribd/amazon-ecs-service-action@v1
+      with:
+        # spec-file: .aws/service-spec.json
+        spec: |
+          {
+            "cluster": ${{ env.ECS_CLUSTER }},
+            "service": ${{ env.ECS_SERVICE }},
+            "taskDefinition": "${{ steps.task-def.outputs.task-definition-arn }}"
+          }
+        force-new-deployment: false
+        wait-until-deployment-complete: true
