@@ -126,7 +126,7 @@ jobs:
       name: Update ECS Service With New Task definition
       uses: scribd/amazon-ecs-service-action@v1
       with:
-        spec-file: .aws/service-spec.json
+        # spec-file: .aws/service-spec.json
         spec: |
           {
             "desiredCount": "1",
