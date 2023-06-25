@@ -1,19 +1,19 @@
 name: Build & Deploy Java Application
-# on:
-#   pull_request:
-#     types:
-#       - closed
-
 on:
-  push:
-    branches:
-      # - main
-      - feature/cleanup
+  pull_request:
+    types:
+      - closed
+
+# on:
+#   push:
+#     branches:
+#       # - main
+#       - feature/cleanup
 
 env:
   AWS_REGION: ${{ vars.MAVEN_QUARKUS_AWS_REGION }}
-  ECS_SERVICE: ${{ vars.MAVEN_QUARKUS_ECS_SERVICE }}
-  ECS_CLUSTER: ${{ vars.MAVEN_QUARKUS_ECS_CLUSTER }}
+  ECS_SERVICE: ${{ secrets.MAVEN_QUARKUS_ECS_SERVICE }}
+  ECS_CLUSTER: ${{ secrets.MAVEN_QUARKUS_ECS_CLUSTER }}
   ECS_TASK_DEFINITION: .aws/templates/ECS_Task_Definition.json
   CONTAINER_NAME: ${{ vars.MAVEN_QUARKUS_CONTAINER_NAME }}
   DESIRED_COUNT: 1
@@ -24,6 +24,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
+
     -
     # Checking out from Git Repository
       name: Checkout From Repository
@@ -31,6 +32,7 @@ jobs:
       uses: actions/checkout@v3
       with:
         ref: feature/cleanup
+
 
     -
     # Setting Up The JDK Environment Using Java 17
@@ -40,6 +42,7 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
+
 
     -
     # Packaging The Application
@@ -56,6 +59,7 @@ jobs:
         pwd && ls -lha target/quarkus-app/*
         pwd && ls -lha .
 
+
     -
     # Extracting Maven Project Version
       name: Get version
@@ -63,6 +67,7 @@ jobs:
       run: |
         VERSION=$( mvn help:evaluate -Dexpression=project.version -q -DforceStdout )
         echo "::set-output name=version::$VERSION"
+
 
     -
     # Authenticating With DOckerHub
@@ -73,6 +78,7 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+
     -
     # Building Docker Image Optimized For ARM Platforms [Apple M1 Devices and any other device that uses an ARM CPU Architecture]
       name: Build Docker Image
@@ -80,6 +86,8 @@ jobs:
       run: |
         docker buildx build --platform linux/arm64 -t kr00deapp/e-transact-devops:${{ steps.get_version.outputs.VERSION }}-${{github.run_number}} .
         echo "image=kr00deapp/e-transact-devops:${{ steps.get_version.outputs.VERSION }}-${{github.run_number}}" >> $GITHUB_OUTPUT
+
+
     -
     # Pushing Build Docker Image To DockerHub For Storage
       name: Push Build To DockerHub
@@ -95,7 +103,6 @@ jobs:
 
 
     # Deploying to Elastic Contianer Service
-
     -
       name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
@@ -103,6 +110,8 @@ jobs:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ env.AWS_REGION }}
+
+
     -
     # Updating Task-Definition.json With New Image
       name: Filling in the new image ID in the Amazon ECS task definition
@@ -112,6 +121,7 @@ jobs:
         task-definition: ${{ env.ECS_TASK_DEFINITION }}
         container-name: ${{ env.CONTAINER_NAME }}
         image: kr00deapp/e-transact-devops:${{ steps.get_version.outputs.VERSION }}-${{github.run_number}}
+
 
     -
     # Creating New ECS Task Definition
@@ -125,8 +135,18 @@ jobs:
 
 
     -
-        name: Update ECS Service With New Task definition
-        run: aws ecs update-service --cluster ${{ env.ECS_CLUSTER }} --service ${{ env.ECS_SERVICE }} --desired-count ${{ env.DESIRED_COUNT }} --task-definition ${{ steps.task-def.outputs.task-definition-arn }} --region ${{ env.AWS_REGION }}
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      name: Update ECS Service With New Task definition
+      uses: scribd/amazon-ecs-service-action@v1
+      with:
+        # spec-file: .aws/service-spec.json
+        spec: |
+          {
+            "desiredCount": "1",
+            "cluster": "${{ env.ECS_CLUSTER }}",
+            "serviceName": "${{ env.ECS_SERVICE }}",
+            "taskDefinition": "${{ steps.task-def.outputs.task-definition-arn }}"
+          }
+        force-new-deployment: false # True if you're redeploying the same container
+        wait-until-deployment-complete: true
+
+
