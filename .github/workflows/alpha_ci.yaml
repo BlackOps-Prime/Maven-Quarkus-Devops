@@ -130,8 +130,8 @@ jobs:
         spec: |
           {
             "desiredCount": "1"
-            "cluster": ${{ env.ECS_CLUSTER }}
-            "serviceName": ${{ env.ECS_SERVICE }}
+            "cluster": "${{ env.ECS_CLUSTER }}"
+            "serviceName": "${{ env.ECS_SERVICE }}"
             "taskDefinition": "${{ steps.task-def.outputs.task-definition-arn }}"
           }
         force-new-deployment: false # True if you're redeploying the same container
