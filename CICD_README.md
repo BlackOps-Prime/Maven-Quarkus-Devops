@@ -50,7 +50,7 @@ Follow the steps laid out in GitHub's [Deploying to Amazon Elastic Container Ser
 
 
 ### Deployment Procedure
-Once your AWS environment is setup, the CI workflow authenticates against AWS, updates the local task definition file, and deploys the update to ECS.
+Once your AWS environment is setup, the CI workflow authenticates against AWS, updates the templated task definition file, and deploys the update to ECS Service.
 
 ### Usage
 GitHub actions will execute the workflow file automatically whenever the conditions are met; thus, whenever a pull request is merged and closed to the main branch.

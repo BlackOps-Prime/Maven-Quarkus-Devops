@@ -1,14 +1,14 @@
 name: Build & Deploy Java Application
-# on:
-#   pull_request:
-#     types:
-#       - closed
-
 on:
-  push:
-    branches:
-      # - main
-      - feature/cleanup
+  pull_request:
+    types:
+      - closed
+
+# on:
+#   push:
+#     branches:
+#       # - main
+#       - feature/cleanup
 
 env:
   AWS_REGION: ${{ vars.MAVEN_QUARKUS_AWS_REGION }}
@@ -116,8 +116,8 @@ jobs:
 
 
     -
-    # Creating New ECS Task Definition
-      name: Create New ECS Task Definition From Updated Template
+    # Creating New ECS Task Definition & Updating Service
+      name: Create New ECS Task Definition From Updated Template & Updating Service
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
       with:
         task-definition: ${{ steps.task-def.outputs.task-definition }}
@@ -125,21 +125,6 @@ jobs:
         cluster: ${{ env.ECS_CLUSTER }}
         wait-for-service-stability: true
 
-
-    # -
-    #   name: Update ECS Service With New Task definition
-    #   uses: scribd/amazon-ecs-service-action@v1
-    #   with:
-    #     # spec-file: .aws/service-spec.json
-    #     spec: |
-    #       {
-    #         "desiredCount": 1,
-    #         "cluster": "${{ env.ECS_CLUSTER }}",
-    #         "serviceName": "${{ env.ECS_SERVICE }}",
-    #         "taskDefinition": "${{ steps.task-def.outputs.task-definition-arn }}"
-    #       }
-    #     force-new-deployment: false # True if you're redeploying the same container
-    #     wait-until-deployment-complete: true
 
     -
       # Serving Notifications Through Slack
