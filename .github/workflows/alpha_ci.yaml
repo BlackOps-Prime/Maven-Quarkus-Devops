@@ -1,14 +1,14 @@
 name: Build & Deploy Java Application
-on:
-  pull_request:
-    types:
-      - closed
-
 # on:
-#   push:
-#     branches:
-#       # - main
-#       - feature/cleanup
+#   pull_request:
+#     types:
+#       - closed
+
+on:
+  push:
+    branches:
+      # - main
+      - feature/cleanup
 
 env:
   AWS_REGION: ${{ vars.MAVEN_QUARKUS_AWS_REGION }}
