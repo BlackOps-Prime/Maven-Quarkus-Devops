@@ -1,72 +1,136 @@
 name: Build & Deploy Java Application
-# on:
-#   pull_request:
-#     types:
-#       - closed
-
 on:
-  push:
-    branches:
-      - main
+  pull_request:
+    types:
+      - closed
+
+# on:
+#   push:
+#     branches:
+#       # - main
+#       - feature/cleanup
+
+env:
+  AWS_REGION: ${{ vars.MAVEN_QUARKUS_AWS_REGION }}
+  ECS_SERVICE: ${{ secrets.MAVEN_QUARKUS_ECS_SERVICE }}
+  ECS_CLUSTER: ${{ secrets.MAVEN_QUARKUS_ECS_CLUSTER }}
+  ECS_TASK_DEFINITION: .aws/templates/ECS_Task_Definition.json
+  CONTAINER_NAME: ${{ vars.MAVEN_QUARKUS_CONTAINER_NAME }}
+  DESIRED_COUNT: 1
+
 
 jobs:
   Build_And_Deploy:
-    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
+
 
     -
     # Checking out from Git Repository
       name: Checkout From Repository
+      id: checkout
       uses: actions/checkout@v3
       with:
-        ref: main
+        ref: feature/cleanup
+
 
     -
     # Setting Up The JDK Environment Using Java 17
       name: Set up JDK Environment With Java 17
+      id: env_setup
       uses: actions/setup-java@v3
       with:
         java-version: '17'
         distribution: 'temurin'
 
+
     -
     # Packaging The Application
       name: Test & Package Application With Maven
+      id: mvn_package
       run: ./mvnw package
 
 
     -
     # Troubleshooting The Contents Of The Debug Directory
       name: Debuging the target folder
+      id: debug
       run: |
         pwd && ls -lha target/quarkus-app/*
         pwd && ls -lha .
 
+
+    -
+    # Extracting Maven Project Version
+      name: Get version
+      id: get_version
+      run: |
+        VERSION=$( mvn help:evaluate -Dexpression=project.version -q -DforceStdout )
+        echo "::set-output name=version::$VERSION"
+
+
     -
     # Authenticating With DOckerHub
         name: Login to Docker Hub
+        id: docker_login
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+
     -
     # Building Docker Image Optimized For ARM Platforms [Apple M1 Devices and any other device that uses an ARM CPU Architecture]
       name: Build Docker Image
+      id: build-image
       run: |
-        pushd src/main/docker
-        docker buildx build --platform linux/arm64 -t kr00deapp/e-transact-devops:1.0.0-SNAPSHOT-${{github.run_number}} .
-        popd
+        docker buildx build --platform linux/arm64 -t kr00deapp/e-transact-devops:${{ steps.get_version.outputs.VERSION }}-${{github.run_number}} .
+        echo "image=kr00deapp/e-transact-devops:${{ steps.get_version.outputs.VERSION }}-${{github.run_number}}" >> $GITHUB_OUTPUT
+
 
     -
     # Pushing Build Docker Image To DockerHub For Storage
       name: Push Build To DockerHub
-      run: docker push kr00deapp/e-transact-devops:1.0.0-SNAPSHOT-${{github.run_number}}
+      run: docker push kr00deapp/e-transact-devops:${{ steps.get_version.outputs.VERSION }}-${{github.run_number}}
+
+
+    # Authenticate With AWS
+    -
+      name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_REGION }}
 
 
     -
-      name: Slack Notification
-      uses: rtCamp/action-slack-notify@v2
-      env:
-        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+    # Updating Task-Definition.json With New Image
+      name: Filling in the new image ID in the Amazon ECS task definition
+      id: task-def
+      uses: aws-actions/amazon-ecs-render-task-definition@v1
+      with:
+        task-definition: ${{ env.ECS_TASK_DEFINITION }}
+        container-name: ${{ env.CONTAINER_NAME }}
+        image: kr00deapp/e-transact-devops:${{ steps.get_version.outputs.VERSION }}-${{github.run_number}}
+
+
+    -
+    # Creating New ECS Task Definition & Updating Service
+      name: Create New ECS Task Definition From Updated Template & Updating Service
+      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+      with:
+        task-definition: ${{ steps.task-def.outputs.task-definition }}
+        service: ${{ env.ECS_SERVICE }}
+        cluster: ${{ env.ECS_CLUSTER }}
+        wait-for-service-stability: true
+
+
+    -
+      # Serving Notifications Through Slack
+        name: Slack Notification
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+
+
