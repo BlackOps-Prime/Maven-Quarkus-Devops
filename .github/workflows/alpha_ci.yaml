@@ -1,3 +1,11 @@
+# Author: Christopher Junior Afeku
+# Description: A ci script to build a maven quarkus application using docker and deploy the artifact to Amazon Elastic Container Service.
+# Last Modified: 30th June, 2023
+# Usage:
+#   * Follow the documentation in the CICD_README.md file to setup the secrets and variables needed
+#   * Keep this file in the .github/workflows directory of the project and push to github for the CI to get triggered.
+
+
 name: Build & Deploy Java Application
 on:
   pull_request:
