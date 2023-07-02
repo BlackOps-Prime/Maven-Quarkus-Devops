@@ -47,6 +47,151 @@ variable "variable_internet_gateway_route" {
   description = "Default internet route cidr block for public route table"
   default     = "0.0.0.0/0"
 }
+# DB Subnet Security Group Rules
+variable "variable_db_security_group_ingress_from_port" {
+  type        = number
+  default     = 4417
+  description = "Default DB Security group incoming traffic from port"
+}
 
+variable "variable_db_security_group_ingress_to_port" {
+  default     = 4417
+  description = "Default DB Security group incoming traffic to port"
+}
+
+variable variable_db_security_group_ingress_protocol {
+  default = "tcp"
+  description = "Default DB Security group incoming traffic protocol"
+}
+
+variable "variable_db_security_group_egress_from_port" {
+  type        = number
+  default     = 0
+  description = "Default DB Security group outgoing traffic from port"
+}
+
+variable "variable_db_security_group_egress_to_port" {
+  type        = number
+  default     = 0
+  description = "Default DB Security group outgoing traffic to port"
+}
+
+variable "variable_db_security_group_egress_protocol" {
+  type        = number
+  default     = -1
+  description = "Default DB Security group outgoing traffic port"
+}
+
+
+# App Subnet Security Group Rules
+variable "variable_app_security_group_ingress_from_port" {
+  default     = 80
+  description = "Default App Security group incoming traffic from port"
+}
+
+variable "variable_app_security_group_ingress_to_port" {
+  default     = 80
+  description = "Default App Security group incoming traffic to port"
+}
+
+variable "variable_app_security_group_ingress_protocol" {
+  default = "tcp"
+  description = "Default App Security group incoming traffic protocol"
+}
+
+variable "variable_app_security_group_egress_from_port" {
+  type        = number
+  default     = 0
+  description = "Default App Security group outgoing traffic from port"
+}
+
+variable "variable_app_security_group_egress_to_port" {
+  type        = number
+  default     = 0
+  description = "Default App Security group outgoing traffic to port"
+}
+
+variable "variable_app_security_group_egress_protocol" {
+  type        = number
+  default     = -1
+  description = "Default App Security group outgoing traffic port"
+}
+
+
+# ALB Security Group Rules
+variable "variable_alb_security_group_ingress_from_port" {
+  default     = 80
+  description = "Default App Security group incoming traffic from port"
+}
+
+variable "variable_alb_security_group_ingress_to_port" {
+  default     = 80
+  description = "Default App Security group incoming traffic to port"
+}
+
+variable "variable_alb_security_group_egress_from_port" {
+  type        = number
+  default     = 0
+  description = "Default App Security group outgoing traffic from port"
+}
+
+variable "variable_alb_security_group_egress_to_port" {
+  type        = number
+  default     = 0
+  description = "Default App Security group outgoing traffic to port"
+}
+
+variable "variable_alb_security_group_ingress_protocol" {
+  default = "tcp"
+  description = "Default ALB Security group incoming traffic protocol"
+}
+
+variable "variable_alb_security_group_egress_protocol" {
+  type        = number
+  default     = -1
+  description = "Default App Security group outgoing traffic port"
+}
+
+
+# Public Subnet Security Group Rules
+variable "variable_proxy_security_group_ingress_from_port" {
+  default     = 443
+  description = "Default App Security group incoming traffic from port"
+}
+
+variable "variable_proxy_security_group_ingress_to_port" {
+  default     = 443
+  description = "Default App Security group incoming traffic to port"
+}
+
+variable "variable_proxy_security_group_ingress_protocol" {
+  default = "tcp"
+  description = "Default Proxy Security group incoming traffic protocol"
+}
+
+variable "variable_proxy_security_group_ingress_cidr_block" {
+  # type        = 
+  default     = "0.0.0.0/0"
+  description = "Default CIDR block for incoming traffic to proxies"
+}
+
+variable "variable_proxy_security_group_egress_from_port" {
+  type        = number
+  default     = 0
+  description = "Default App Security group outgoing traffic from port"
+}
+
+variable "variable_proxy_security_group_egress_to_port" {
+  type        = number
+  default     = 0
+  description = "Default App Security group outgoing traffic to port"
+}
+
+variable "variable_proxy_security_group_egress_protocol" {
+  type        = number
+  default     = -1
+  description = "Default App Security group outgoing traffic port"
+}
 
 #### END NETWORKING MODULE VARIABLES ######
+

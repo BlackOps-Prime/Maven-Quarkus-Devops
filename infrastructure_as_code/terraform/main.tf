@@ -5,6 +5,7 @@
 #   * Run `terraform plan` to and validate the printed out results.
 #   * Run `terraform apply` to create the resources for the underlying infrastructure.
 #   * You may also run `terraform apply` to update the deployed resources after making needed changes to this iac project.
+# Last Modified: 1st July, 2023
 
 
 provider "aws" {
@@ -24,9 +25,8 @@ provider "aws" {
 }
 
 module "networking" {
-  source = "./modules/networking"
+    source = "./modules/networking"
 
-  global_var_environment = var.global_var_environment
-  global_var_tag_name    = var.global_var_tag_name
-
+    global_var_environment = var.global_var_environment
+    global_var_tag_name    = var.global_var_tag_name
 }

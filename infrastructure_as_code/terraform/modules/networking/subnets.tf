@@ -1,9 +1,9 @@
 resource "aws_subnet" "private" {
-  count = length(local.private_subnets)
-  vpc_id     = aws_vpc.this.id
-  cidr_block = element(local.private_subnets, count.index)
+  count             = length(local.private_subnets)
+  vpc_id            = aws_vpc.this.id
+  cidr_block        = element(local.private_subnets, count.index)
   availability_zone = element(local.availability_zones, count.index)
-  depends_on = [aws_vpc.this]
+  depends_on        = [aws_vpc.this]
 
 
   tags = {
@@ -13,11 +13,11 @@ resource "aws_subnet" "private" {
 }
 
 resource "aws_subnet" "database" {
-  count = length(local.database_subnets)
-  vpc_id     = aws_vpc.this.id
-  cidr_block = element(local.database_subnets, count.index)
+  count             = length(local.database_subnets)
+  vpc_id            = aws_vpc.this.id
+  cidr_block        = element(local.database_subnets, count.index)
   availability_zone = element(local.availability_zones, count.index)
-  depends_on = [aws_vpc.this]
+  depends_on        = [aws_vpc.this]
 
 
   tags = {
@@ -27,11 +27,11 @@ resource "aws_subnet" "database" {
 }
 
 resource "aws_subnet" "public" {
-  count = length(local.public_subnets)
-  vpc_id     = aws_vpc.this.id
-  cidr_block = element(local.public_subnets, count.index)
+  count             = length(local.public_subnets)
+  vpc_id            = aws_vpc.this.id
+  cidr_block        = element(local.public_subnets, count.index)
   availability_zone = element(local.availability_zones, count.index)
-  depends_on = [aws_vpc.this]
+  depends_on        = [aws_vpc.this]
 
 
   tags = {
