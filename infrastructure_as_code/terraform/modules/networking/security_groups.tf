@@ -6,15 +6,15 @@ resource "aws_security_group" "public" {
 
   ingress = [
     {
-        description = "Allow traffic from External LoadBalancer into Public Subnet"
-        from_port   = var.variable_proxy_security_group_ingress_from_port
-        to_port     = var.variable_proxy_security_group_ingress_to_port
-        protocol    = var.variable_proxy_security_group_ingress_protocol
-        cidr_blocks = [var.variable_proxy_security_group_ingress_cidr_block]
-        ipv6_cidr_blocks = []
-        prefix_list_ids = []
-        security_groups = []
-        self = true
+      description      = "Allow traffic from External LoadBalancer into Public Subnet"
+      from_port        = var.variable_proxy_security_group_ingress_from_port
+      to_port          = var.variable_proxy_security_group_ingress_to_port
+      protocol         = var.variable_proxy_security_group_ingress_protocol
+      cidr_blocks      = [var.variable_proxy_security_group_ingress_cidr_block]
+      ipv6_cidr_blocks = []
+      prefix_list_ids  = []
+      security_groups  = []
+      self             = true
     }
   ]
 
@@ -38,15 +38,15 @@ resource "aws_security_group" "internal_load_balancer" {
 
   ingress = [
     {
-        description     = "Allow traffic from Public Subnet to InternalALB"
-        from_port       = var.variable_alb_security_group_ingress_from_port
-        to_port         = var.variable_alb_security_group_ingress_to_port
-        protocol        = var.variable_alb_security_group_ingress_protocol
-        security_groups = [ aws_security_group.public.name ]
-        ipv6_cidr_blocks = []
-        prefix_list_ids = []
-        cidr_blocks = []
-        self = true
+      description      = "Allow traffic from Public Subnet to InternalALB"
+      from_port        = var.variable_alb_security_group_ingress_from_port
+      to_port          = var.variable_alb_security_group_ingress_to_port
+      protocol         = var.variable_alb_security_group_ingress_protocol
+      security_groups  = [aws_security_group.public.name]
+      ipv6_cidr_blocks = []
+      prefix_list_ids  = []
+      cidr_blocks      = []
+      self             = true
     }
   ]
 
@@ -70,15 +70,15 @@ resource "aws_security_group" "application" {
 
   ingress = [
     {
-        description     = "Allow traffic from internal loadbalancer"
-        from_port       = var.variable_app_security_group_ingress_from_port
-        to_port         = var.variable_app_security_group_ingress_to_port
-        protocol        = var.variable_app_security_group_ingress_protocol
-        security_groups = [aws_security_group.internal_load_balancer.name]
-        ipv6_cidr_blocks = []
-        prefix_list_ids = []
-        cidr_blocks = []
-        self = true
+      description      = "Allow traffic from internal loadbalancer"
+      from_port        = var.variable_app_security_group_ingress_from_port
+      to_port          = var.variable_app_security_group_ingress_to_port
+      protocol         = var.variable_app_security_group_ingress_protocol
+      security_groups  = [aws_security_group.internal_load_balancer.name]
+      ipv6_cidr_blocks = []
+      prefix_list_ids  = []
+      cidr_blocks      = []
+      self             = true
     }
   ]
 
@@ -105,15 +105,15 @@ resource "aws_security_group" "database_allow" {
 
   ingress = [
     {
-        description     = "Allow Application Traffic To Database"
-        from_port       = var.variable_db_security_group_ingress_to_port
-        to_port         = var.variable_db_security_group_ingress_from_port
-        protocol        = var.variable_db_security_group_ingress_protocol
-        security_groups = [aws_security_group.application.name]
-        ipv6_cidr_blocks = []
-        prefix_list_ids = []
-        cidr_blocks = []
-        self = true
+      description      = "Allow Application Traffic To Database"
+      from_port        = var.variable_db_security_group_ingress_to_port
+      to_port          = var.variable_db_security_group_ingress_from_port
+      protocol         = var.variable_db_security_group_ingress_protocol
+      security_groups  = [aws_security_group.application.name]
+      ipv6_cidr_blocks = []
+      prefix_list_ids  = []
+      cidr_blocks      = []
+      self             = true
     }
   ]
 

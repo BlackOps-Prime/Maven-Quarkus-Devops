@@ -59,8 +59,8 @@ variable "variable_db_security_group_ingress_to_port" {
   description = "Default DB Security group incoming traffic to port"
 }
 
-variable variable_db_security_group_ingress_protocol {
-  default = "tcp"
+variable "variable_db_security_group_ingress_protocol" {
+  default     = "tcp"
   description = "Default DB Security group incoming traffic protocol"
 }
 
@@ -95,7 +95,7 @@ variable "variable_app_security_group_ingress_to_port" {
 }
 
 variable "variable_app_security_group_ingress_protocol" {
-  default = "tcp"
+  default     = "tcp"
   description = "Default App Security group incoming traffic protocol"
 }
 
@@ -142,7 +142,7 @@ variable "variable_alb_security_group_egress_to_port" {
 }
 
 variable "variable_alb_security_group_ingress_protocol" {
-  default = "tcp"
+  default     = "tcp"
   description = "Default ALB Security group incoming traffic protocol"
 }
 
@@ -165,7 +165,7 @@ variable "variable_proxy_security_group_ingress_to_port" {
 }
 
 variable "variable_proxy_security_group_ingress_protocol" {
-  default = "tcp"
+  default     = "tcp"
   description = "Default Proxy Security group incoming traffic protocol"
 }
 
@@ -191,6 +191,19 @@ variable "variable_proxy_security_group_egress_protocol" {
   type        = number
   default     = -1
   description = "Default App Security group outgoing traffic port"
+}
+
+
+variable "variable_external_alb_enable_delete_protection" {
+  type        = bool
+  default     = false
+  description = "Default delete protection rule for External Load Balancer"
+}
+
+variable "variable_internal_alb_enable_delete_protection" {
+  type        = bool
+  default     = false
+  description = "Default delete protection rule for External Load Balancer"
 }
 
 #### END NETWORKING MODULE VARIABLES ######
