@@ -207,4 +207,3 @@ variable "variable_internal_alb_enable_delete_protection" {
 }
 
 #### END NETWORKING MODULE VARIABLES ######
-

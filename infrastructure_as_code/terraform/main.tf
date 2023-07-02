@@ -30,3 +30,8 @@ module "networking" {
   global_var_environment = var.global_var_environment
   global_var_tag_name    = var.global_var_tag_name
 }
+
+module "ecs" {
+    source = "./modules/ecs"
+    global_var_tag_name = var.global_var_tag_name
+}
