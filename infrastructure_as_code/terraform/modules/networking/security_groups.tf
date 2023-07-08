@@ -26,7 +26,7 @@ resource "aws_security_group" "public" {
   }
 
   tags = {
-    Name = "${var.global_var_tag_name}-Proxy-security-group"
+    Name = "${var.global_var_tag_name}-${var.global_var_environment}-Proxy-security-group"
   }
 }
 
@@ -42,7 +42,7 @@ resource "aws_security_group" "internal_load_balancer" {
       from_port        = var.variable_alb_security_group_ingress_from_port
       to_port          = var.variable_alb_security_group_ingress_to_port
       protocol         = var.variable_alb_security_group_ingress_protocol
-      security_groups  = [aws_security_group.public.name]
+      security_groups  = [aws_security_group.public.id]
       ipv6_cidr_blocks = []
       prefix_list_ids  = []
       cidr_blocks      = []
@@ -58,7 +58,7 @@ resource "aws_security_group" "internal_load_balancer" {
   }
 
   tags = {
-    Name = "${var.global_var_tag_name}-InternalALB-security-group"
+    Name = "${var.global_var_tag_name}-${var.global_var_environment}-InternalALB-security-group"
   }
 }
 
@@ -74,7 +74,7 @@ resource "aws_security_group" "application" {
       from_port        = var.variable_app_security_group_ingress_from_port
       to_port          = var.variable_app_security_group_ingress_to_port
       protocol         = var.variable_app_security_group_ingress_protocol
-      security_groups  = [aws_security_group.internal_load_balancer.name]
+      security_groups  = [aws_security_group.internal_load_balancer.id]
       ipv6_cidr_blocks = []
       prefix_list_ids  = []
       cidr_blocks      = []
@@ -90,7 +90,7 @@ resource "aws_security_group" "application" {
   }
 
   tags = {
-    Name = "${var.global_var_tag_name}-application-security-group"
+    Name = "${var.global_var_tag_name}-${var.global_var_environment}-application-security-group"
   }
 
 }
@@ -109,7 +109,7 @@ resource "aws_security_group" "database_allow" {
       from_port        = var.variable_db_security_group_ingress_to_port
       to_port          = var.variable_db_security_group_ingress_from_port
       protocol         = var.variable_db_security_group_ingress_protocol
-      security_groups  = [aws_security_group.application.name]
+      security_groups  = [aws_security_group.application.id]
       ipv6_cidr_blocks = []
       prefix_list_ids  = []
       cidr_blocks      = []
@@ -125,7 +125,7 @@ resource "aws_security_group" "database_allow" {
   }
 
   tags = {
-    Name = "${var.global_var_tag_name}-database-security-group"
+    Name = "${var.global_var_tag_name}-${var.global_var_environment}-database-security-group"
   }
 
 }

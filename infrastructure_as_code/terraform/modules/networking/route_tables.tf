@@ -2,7 +2,7 @@ resource "aws_route_table" "private" {
   vpc_id = aws_vpc.this.id
 
   tags = {
-    Name = "${var.global_var_tag_name}-private-route-table"
+    Name = "${var.global_var_tag_name}-${var.global_var_environment}-private-route-table"
   }
 }
 
@@ -10,7 +10,7 @@ resource "aws_route_table" "database" {
   vpc_id = aws_vpc.this.id
 
   tags = {
-    Name = "${var.global_var_tag_name}-database-route-table"
+    Name = "${var.global_var_tag_name}-${var.global_var_environment}-database-route-table"
   }
 }
 
@@ -20,7 +20,7 @@ resource "aws_route_table" "public" {
 
 
   tags = {
-    Name = "${var.global_var_tag_name}-public-route-table"
+    Name = "${var.global_var_tag_name}-${var.global_var_environment}-public-route-table"
   }
 }
 

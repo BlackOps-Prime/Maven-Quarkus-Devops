@@ -5,24 +5,7 @@
 #   * Run `terraform plan` to and validate the printed out results.
 #   * Run `terraform apply` to create the resources for the underlying infrastructure.
 #   * You may also run `terraform apply` to update the deployed resources after making needed changes to this iac project.
-# Last Modified: 1st July, 2023
-
-
-provider "aws" {
-  region = var.global_var_region
-
-  profile                  = var.global_var_profile
-  shared_config_files      = ["/Users/christopher.afeku/.aws/config"]
-  shared_credentials_files = ["/Users/christopher.afeku/.aws/credentials"]
-
-  default_tags {
-    tags = {
-      Env       = var.global_var_environment
-      Terraform = true
-    }
-
-  }
-}
+# Last Modified: 8th July, 2023
 
 module "networking" {
   source = "./modules/networking"
@@ -32,6 +15,16 @@ module "networking" {
 }
 
 module "ecs" {
-    source = "./modules/ecs"
-    global_var_tag_name = var.global_var_tag_name
+  source                      = "./modules/ecs"
+  global_var_tag_name         = var.global_var_tag_name
+  global_var_environment      = var.global_var_environment
+  variable_ecs_log_group_name = module.logging.ecs_cluster_log_group_name
+}
+
+module "logging" {
+  source                             = "./modules/logging"
+  global_var_tag_name                = var.global_var_tag_name
+  global_var_environment             = var.global_var_environment
+  variable_ecs_log_group_name_prefix = "${var.global_var_tag_name}-Cluster-log-group"
+
 }

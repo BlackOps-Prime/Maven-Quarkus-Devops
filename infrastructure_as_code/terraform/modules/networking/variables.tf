@@ -206,4 +206,7 @@ variable "variable_internal_alb_enable_delete_protection" {
   description = "Default delete protection rule for External Load Balancer"
 }
 
+
+
+
 #### END NETWORKING MODULE VARIABLES ######

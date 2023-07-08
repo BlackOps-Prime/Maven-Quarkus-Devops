@@ -7,7 +7,7 @@ resource "aws_subnet" "private" {
 
 
   tags = {
-    Name = "${var.global_var_tag_name}-${element(local.availability_zones, count.index)}-private-subnet"
+    Name = "${var.global_var_tag_name}-${var.global_var_environment}-${element(local.availability_zones, count.index)}-private-subnet"
   }
 
 }
@@ -21,7 +21,7 @@ resource "aws_subnet" "database" {
 
 
   tags = {
-    Name = "${var.global_var_tag_name}-${element(local.availability_zones, count.index)}-database-subnet"
+    Name = "${var.global_var_tag_name}-${var.global_var_environment}-${element(local.availability_zones, count.index)}-database-subnet"
   }
 
 }
@@ -35,7 +35,7 @@ resource "aws_subnet" "public" {
 
 
   tags = {
-    Name = "${var.global_var_tag_name}-${element(local.availability_zones, count.index)}-public-subnet"
+    Name = "${var.global_var_tag_name}-${var.global_var_environment}-${element(local.availability_zones, count.index)}-public-subnet"
   }
 
 }
