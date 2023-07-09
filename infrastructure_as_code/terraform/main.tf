@@ -51,6 +51,7 @@ module "loadbalancing" {
   variable_private_subnets = module.networking.private_subnets_ids
   global_var_tag_name                = var.global_var_tag_name
   global_var_environment             = var.global_var_environment
+  variable_public_subnets_security_group = module.networking.external_load_balancer_security_group
   variable_internal_loadbalancer_security_group = module.networking.internal_load_balancer_security_group
   variable_vpc_id = module.networking.main_vpc_id
   count   =  var.variable_instance_count

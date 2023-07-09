@@ -2,9 +2,9 @@ variable "variable_alb_proxy_target_group_instance_targets" {
   description = "Default instance ids of proxy servers"
 }
 
-# variable "variable_alb_application_target_group_instance_targets" {
-#   description = "Default instance ids of application servers"
-# }
+variable "variable_public_subnets_security_group" {
+  description = "Default public subnets security group"
+}
 
 variable "variable_public_subnets" {
   description = "Default list of public subnets"

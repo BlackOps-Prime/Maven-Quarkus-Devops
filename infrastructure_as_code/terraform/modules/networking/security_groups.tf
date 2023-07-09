@@ -1,4 +1,38 @@
 # Allow Traffic From External LoadBalancer To Public Subnet
+resource "aws_security_group" "ext_loadbalancer" {
+  name        = "External-LoadBalancer-security-group"
+  description = "External LoadBalancer security group"
+  vpc_id      = aws_vpc.this.id
+
+  ingress = [
+    {
+      description      = "Allow traffic from the internet into External LoadBalancer"
+      from_port        = var.variable_ext_lb_security_group_ingress_from_port
+      to_port          = var.variable_ext_lb_security_group_ingress_to_port
+      protocol         = var.variable_ext_lb_security_group_ingress_protocol
+      cidr_blocks      = [var.variable_ext_lb_security_group_ingress_cidr_block]
+      ipv6_cidr_blocks = []
+      prefix_list_ids  = []
+      security_groups  = []
+      self             = false
+    }
+  ]
+
+  egress {
+    from_port = var.variable_ext_lb_security_group_egress_from_port
+    to_port   = var.variable_ext_lb_security_group_egress_to_port
+    protocol  = var.variable_ext_lb_security_group_egress_protocol
+    cidr_blocks = [var.variable_ext_lb_security_group_egress_cidr]
+    self      = false
+  }
+
+  tags = {
+    Name = "${var.global_var_tag_name}-${var.global_var_environment}-ExternalALB-security-group"
+  }
+}
+
+
+# Allow Traffic From External LoadBalancer To Public Subnet
 resource "aws_security_group" "public" {
   name        = "Proxy-security-group"
   description = "Proxy Security Group"
@@ -10,11 +44,11 @@ resource "aws_security_group" "public" {
       from_port        = var.variable_proxy_security_group_ingress_from_port
       to_port          = var.variable_proxy_security_group_ingress_to_port
       protocol         = var.variable_proxy_security_group_ingress_protocol
-      cidr_blocks      = [var.variable_proxy_security_group_ingress_cidr_block]
+      security_groups  = [aws_security_group.ext_loadbalancer.id]
+      cidr_blocks      = []
       ipv6_cidr_blocks = []
       prefix_list_ids  = []
-      security_groups  = []
-      self             = true
+      self = false
     },
     {
       description      = "Allow SSH into Public Subnet"
@@ -25,7 +59,7 @@ resource "aws_security_group" "public" {
       ipv6_cidr_blocks = []
       prefix_list_ids  = []
       security_groups  = []
-      self             = true
+      self = false
     }
   ]
 
@@ -33,7 +67,8 @@ resource "aws_security_group" "public" {
     from_port = var.variable_proxy_security_group_egress_from_port
     to_port   = var.variable_proxy_security_group_egress_to_port
     protocol  = var.variable_proxy_security_group_egress_protocol
-    self      = "true"
+    cidr_blocks = [var.variable_proxy_security_group_egress_cidr]
+    self      = false
   }
 
   tags = {
@@ -57,7 +92,7 @@ resource "aws_security_group" "internal_load_balancer" {
       ipv6_cidr_blocks = []
       prefix_list_ids  = []
       cidr_blocks      = []
-      self             = true
+      self             = false
     }
   ]
 
@@ -65,7 +100,8 @@ resource "aws_security_group" "internal_load_balancer" {
     from_port = var.variable_alb_security_group_egress_from_port
     to_port   = var.variable_alb_security_group_egress_to_port
     protocol  = var.variable_alb_security_group_egress_protocol
-    self      = "true"
+    cidr_blocks = [var.variable_int_alb_security_group_egress_cidr]
+    self      = false
   }
 
   tags = {
@@ -89,7 +125,7 @@ resource "aws_security_group" "application" {
       ipv6_cidr_blocks = []
       prefix_list_ids  = []
       cidr_blocks      = []
-      self             = true
+      self             = false
     }
   ]
 
@@ -97,7 +133,8 @@ resource "aws_security_group" "application" {
     from_port = var.variable_app_security_group_egress_from_port
     to_port   = var.variable_app_security_group_egress_to_port
     protocol  = var.variable_app_security_group_egress_protocol
-    self      = "true"
+    cidr_blocks = [var.variable_app_security_group_egress_cidr]
+    self      = false
   }
 
   tags = {
@@ -124,7 +161,7 @@ resource "aws_security_group" "database_allow" {
       ipv6_cidr_blocks = []
       prefix_list_ids  = []
       cidr_blocks      = []
-      self             = true
+      self             = false
     }
   ]
 
@@ -132,7 +169,8 @@ resource "aws_security_group" "database_allow" {
     from_port = var.variable_db_security_group_egress_from_port
     to_port   = var.variable_db_security_group_egress_to_port
     protocol  = var.variable_db_security_group_egress_protocol
-    self      = "true"
+    cidr_blocks = [var.variable_database_security_group_egress_cidr]
+    self      = false
   }
 
   tags = {

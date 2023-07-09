@@ -169,10 +169,10 @@ variable "variable_proxy_security_group_ingress_protocol" {
   description = "Default Proxy Security group incoming traffic protocol"
 }
 
-variable "variable_proxy_security_group_ingress_cidr_block" {
-  default     = "0.0.0.0/0"
-  description = "Default CIDR block for incoming traffic to proxies"
-}
+# variable "variable_proxy_security_group_ingress_cidr_block" {
+#   default     = "0.0.0.0/0"
+#   description = "Default CIDR block for incoming traffic to proxies"
+# }
 
 variable "variable_proxy_security_group_ingress_ssh_from_port" {
   default     = "22"
@@ -200,6 +200,18 @@ variable "variable_proxy_security_group_egress_from_port" {
   description = "Default App Security group outgoing traffic from port"
 }
 
+variable "variable_ext_lb_security_group_egress_from_port" {
+  type        = number
+  default     = 0
+  description = "Default  External LB Security group outgoing traffic from port"
+}
+
+variable "variable_ext_lb_security_group_egress_to_port" {
+  type        = number
+  default     = 0
+  description = "Default External LB Security group outgoing traffic to port"
+}
+
 variable "variable_proxy_security_group_egress_to_port" {
   type        = number
   default     = 0
@@ -209,8 +221,64 @@ variable "variable_proxy_security_group_egress_to_port" {
 variable "variable_proxy_security_group_egress_protocol" {
   type        = number
   default     = -1
-  description = "Default App Security group outgoing traffic port"
+  description = "Default App Security group outgoing traffic protocol"
 }
 
+variable "variable_ext_lb_security_group_egress_protocol" {
+  type        = number
+  default     = -1
+  description = "Default External LB Security group outgoing traffic protocol"
+}
 
+variable "variable_ext_lb_security_group_egress_cidr" {
+  type        = string
+  default     = "0.0.0.0/0"
+  description = "Default  External LB Security group outgoing traffic cidr"
+}
+
+variable "variable_proxy_security_group_egress_cidr" {
+  type        = string
+  default     = "0.0.0.0/0"
+  description = "Default App Security group outgoing traffic cidr"
+}
+
+variable "variable_int_alb_security_group_egress_cidr" {
+  type        = string
+  default     = "0.0.0.0/0"
+  description = "Default Internal LB Security group outgoing traffic cidr"
+}
+
+variable "variable_app_security_group_egress_cidr" {
+  type        = string
+  default     = "0.0.0.0/0"
+  description = "Default App Security group outgoing traffic cidr"
+}
+
+variable "variable_database_security_group_egress_cidr" {
+  type        = string
+  default     = "0.0.0.0/0"
+  description = "Default DB Security group outgoing traffic cidr"
+}
+
+variable "variable_ext_lb_security_group_ingress_from_port" {
+  type        = number
+  default     = 80
+  description = "Default Ext LB Security group incoming traffic from port"
+}
+
+variable "variable_ext_lb_security_group_ingress_to_port" {
+  type        = number
+  default     = 80
+  description = "Default Ext LB Security group incoming traffic to port"
+}
+
+variable "variable_ext_lb_security_group_ingress_protocol" {
+  default     = "tcp"
+  description = "Default Ext LB Security group incoming traffic protocol"
+}
+
+variable "variable_ext_lb_security_group_ingress_cidr_block" {
+  default     = "0.0.0.0/0"
+  description = "Default CIDR block for incoming traffic to external load balancer"
+}
 #### END NETWORKING MODULE VARIABLES ######

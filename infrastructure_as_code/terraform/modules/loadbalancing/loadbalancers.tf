@@ -5,6 +5,7 @@ resource "aws_alb" "external" {
   # subnets                    = [for subnet in aws_subnet.public : subnet.id]
   subnets = var.variable_public_subnets
   enable_deletion_protection = var.variable_external_alb_enable_delete_protection
+  security_groups = var.variable_public_subnets_security_group
 
 
   tags = {

@@ -12,6 +12,10 @@ output "public_subnets_security_groups" {
   value = aws_security_group.public.*.id
 }
 
+output "external_load_balancer_security_group" {
+  value = aws_security_group.ext_loadbalancer.*.id
+}
+
 output "internal_load_balancer_security_group" {
   value = aws_security_group.internal_load_balancer.*.id
 }
