@@ -27,3 +27,5 @@ variable "global_var_provider_shared_config" {
 variable "global_var_provider_shared_credentials" {
   default = ["/Users/christopher.afeku/.aws/credentials"]
 }
+
+variable "variable_instance_count" {}

@@ -155,12 +155,12 @@ variable "variable_alb_security_group_egress_protocol" {
 
 # Public Subnet Security Group Rules
 variable "variable_proxy_security_group_ingress_from_port" {
-  default     = 443
+  default     = 80
   description = "Default App Security group incoming traffic from port"
 }
 
 variable "variable_proxy_security_group_ingress_to_port" {
-  default     = 443
+  default     = 80
   description = "Default App Security group incoming traffic to port"
 }
 
@@ -170,9 +170,28 @@ variable "variable_proxy_security_group_ingress_protocol" {
 }
 
 variable "variable_proxy_security_group_ingress_cidr_block" {
-  # type        = 
   default     = "0.0.0.0/0"
   description = "Default CIDR block for incoming traffic to proxies"
+}
+
+variable "variable_proxy_security_group_ingress_ssh_from_port" {
+  default     = "22"
+  description = "Default SSH from port for proxies"
+}
+
+variable "variable_proxy_security_group_ingress_ssh_to_port" {
+  default     = "22"
+  description = "Default SSH to port for proxies"
+}
+
+variable "variable_proxy_security_group_ssh_ingress_protocol" {
+  default     = "tcp"
+  description = "Default SSH protocol for proxies"
+}
+
+variable "variable_proxy_security_group_ssh_ingress_cidr_block" {
+  default     = "0.0.0.0/0"
+  description = "Default CIDR block for incoming ssh traffic to proxies"
 }
 
 variable "variable_proxy_security_group_egress_from_port" {
@@ -192,21 +211,6 @@ variable "variable_proxy_security_group_egress_protocol" {
   default     = -1
   description = "Default App Security group outgoing traffic port"
 }
-
-
-variable "variable_external_alb_enable_delete_protection" {
-  type        = bool
-  default     = false
-  description = "Default delete protection rule for External Load Balancer"
-}
-
-variable "variable_internal_alb_enable_delete_protection" {
-  type        = bool
-  default     = false
-  description = "Default delete protection rule for External Load Balancer"
-}
-
-
 
 
 #### END NETWORKING MODULE VARIABLES ######

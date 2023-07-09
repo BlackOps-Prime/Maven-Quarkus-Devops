@@ -15,6 +15,17 @@ resource "aws_security_group" "public" {
       prefix_list_ids  = []
       security_groups  = []
       self             = true
+    },
+    {
+      description      = "Allow SSH into Public Subnet"
+      from_port        = var.variable_proxy_security_group_ingress_ssh_from_port
+      to_port          = var.variable_proxy_security_group_ingress_ssh_to_port
+      protocol         = var.variable_proxy_security_group_ssh_ingress_protocol
+      cidr_blocks      = [var.variable_proxy_security_group_ssh_ingress_cidr_block]
+      ipv6_cidr_blocks = []
+      prefix_list_ids  = []
+      security_groups  = []
+      self             = true
     }
   ]
 
