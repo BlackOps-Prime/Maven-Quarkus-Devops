@@ -6,3 +6,4 @@ resource "aws_internet_gateway" "this" {
     Name = "${var.global_var_tag_name}-${var.global_var_environment}-internet-gateway"
   }
 }
+
